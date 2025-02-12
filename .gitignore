@@ -3,3 +3,4 @@ __pycache__/
 classify_image_graph_def.pb
 /datasets/CottonWeedDiff_test
 /datasets/CottonWeedDiff_train
+/datasets/CottonWeedDiff_t.zip

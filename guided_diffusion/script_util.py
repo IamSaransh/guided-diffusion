@@ -250,12 +250,14 @@ def create_classifier(
     attention_ds = []
     for res in classifier_attention_resolutions.split(","):
         attention_ds.append(image_size // int(res))
-
+    from guided_diffusion import dist_util, logger
+    logger.configure()
+    logger.log("create classifier called and called with out channels 1000")
     return EncoderUNetModel(
         image_size=image_size,
         in_channels=3,
         model_channels=classifier_width,
-        out_channels=10,#changed
+        out_channels=1000,#changed
         num_res_blocks=classifier_depth,
         attention_resolutions=tuple(attention_ds),
         channel_mult=channel_mult,
