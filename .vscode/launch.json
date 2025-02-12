@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug MPI Classifier Training",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/classifier_train.py",
+            "args": [
+                "--data_dir", "/home/saranshvashistha/workspace/class_conditioned/plant_village_tomato",
+                "--iterations", "200000",
+                "--anneal_lr", "True",
+                "--batch_size", "1",
+                "--lr", "3e-4",
+                "--save_interval", "10000",
+                "--weight_decay", "0.05",
+                "--image_size", "256",
+                "--classifier_attention_resolutions", "32,16,8",
+                "--classifier_depth", "2",
+                "--classifier_width", "256",
+                "--classifier_pool", "attention",
+                "--classifier_resblock_updown", "True",
+                "--classifier_use_scale_shift_norm", "True"
+            ],
+            "env": {
+                "OMPI_ALLOW_RUN_AS_ROOT": "1",
+                "OMPI_ALLOW_RUN_AS_ROOT_CONFIRM": "1",
+                "CUDA_LAUNCH_BLOCKING": "1"
+            },
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": false
+        }
+    ]
+}

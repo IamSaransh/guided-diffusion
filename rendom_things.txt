@@ -1,0 +1,101 @@
+stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ which mpicc
+echo $MPI_HOME
+/usr/bin/mpicc
+
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ export MPI_HOME=/usr/lib/x86_64-linux-gnu/openmpi
+export PATH=$MPI_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$MPI_HOME/lib:$LD_LIBRARY_PATH
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ mpicc --version
+mpiexec --version
+gcc (Ubuntu 11.2.0-19ubuntu1) 11.2.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+mpiexec (OpenRTE) 4.1.2
+
+Report bugs to http://www.open-mpi.org/community/help/
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ conda install -c conda-forge mpi4py
+Channels:
+ - conda-forge
+ - defaults
+Platform: linux-64
+Collecting package metadata (repodata.json): done
+Solving environment: done
+
+## Package Plan ##
+
+  environment location: /home/saranshvashistha/anaconda3/envs/stable_diff_2
+
+  added / updated specs:
+    - mpi4py
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    mpi4py-4.0.2               |  py310hc9139ab_0         801 KB  conda-forge
+    openssl-3.4.1              |       h7b32b05_0         2.8 MB  conda-forge
+    python_abi-3.10            |          2_cp310           4 KB  conda-forge
+    ------------------------------------------------------------
+                                           Total:         3.6 MB
+
+The following NEW packages will be INSTALLED:
+
+  python_abi         conda-forge/linux-64::python_abi-3.10-2_cp310 
+
+The following packages will be UPDATED:
+
+  mpi4py             pkgs/main::mpi4py-3.1.4-py310hfc96bbd~ --> conda-forge::mpi4py-4.0.2-py310hc9139ab_0 
+  mpich                   pkgs/main::mpich-3.3.2-external_0 --> conda-forge::mpich-4.3.0-h1a8bee6_100 
+  openssl                                  3.4.0-h7b32b05_1 --> 3.4.1-h7b32b05_0 
+
+
+Proceed ([y]/n)? y
+
+
+Downloading and Extracting Packages:
+                                                                                                                                                                                                                                                                                          
+Preparing transaction: done                                                                                                                                                                                                                                                               
+Verifying transaction: done                                                                                                                                                                                                                                                               
+Executing transaction: done
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ MPICC=/usr/bin/mpicc pip install --no-cache-dir mpi4py
+Requirement already satisfied: mpi4py in /home/saranshvashistha/anaconda3/envs/stable_diff_2/lib/python3.10/site-packages (4.0.2)
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ python -c "from mpi4py import MPI; print(MPI.COMM_WORLD.Get_size())"
+1
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ mpiexec -n 1 python scripts/classifier_train.py --data_dir path/to/imagenet $TRAIN_FLAGS $CLASSIFIER_FLAGS
+/home/saranshvashistha/anaconda3/envs/stable_diff_2/lib/python3.10/site-packages/guided_diffusion/nn.py:144: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, run_function, length, *args):
+/home/saranshvashistha/anaconda3/envs/stable_diff_2/lib/python3.10/site-packages/guided_diffusion/nn.py:154: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, *output_grads):
+Logging to /tmp/openai-2025-02-12-01-42-47-759682
+creating model and diffusion...
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/saranshvashistha/workspace/class_conditioned/guided-diffusion/scripts/classifier_train.py", line 226, in <module>
+[rank0]:     main()
+[rank0]:   File "/home/saranshvashistha/workspace/class_conditioned/guided-diffusion/scripts/classifier_train.py", line 35, in main
+[rank0]:     model, diffusion = create_classifier_and_diffusion(
+[rank0]:   File "/home/saranshvashistha/anaconda3/envs/stable_diff_2/lib/python3.10/site-packages/guided_diffusion/script_util.py", line 210, in create_classifier_and_diffusion
+[rank0]:     classifier = create_classifier(
+[rank0]:   File "/home/saranshvashistha/anaconda3/envs/stable_diff_2/lib/python3.10/site-packages/guided_diffusion/script_util.py", line 258, in create_classifier
+[rank0]:     return EncoderUNetModel(
+[rank0]:   File "/home/saranshvashistha/anaconda3/envs/stable_diff_2/lib/python3.10/site-packages/guided_diffusion/unet.py", line 841, in __init__
+[rank0]:     ResBlock(
+[rank0]: TypeError: ResBlock.__init__() got an unexpected keyword argument 'use_neighborhood_attention'
+[rank0]:[W212 01:42:48.394137467 ProcessGroupNCCL.cpp:1496] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ mpiexec -n 1 python scripts/classifier_train.py --data_dir path/to/imagenet $TRAIN_FLAGS $CLASSIFIER_FLAGS
+[mpiexec@server1] HYDU_getcwd (lib/utils/args.c:241): allocated space is too small for absolute path
+python: can't open file 'scripts/classifier_train.py': [Errno 2] No such file or directory
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ ls
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ cd ../
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned$ ls
+guided-diffusion  plant_village_tomato
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned$ cd guided-diffusion/
+(stable_diff_2) saranshvashistha@server1:~/workspace/class_conditioned/guided-diffusion$ mpiexec -n 1 python scripts/classifier_train.py --data_dir path/to/imagenet $TRAIN_FLAGS $CLASSIFIER_FLAGS
+/home/saranshvashistha/anaconda3/envs/stable_diff_2/lib/python3.10/site-packages/guided_diffusion/nn.py:144: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, run_function, length, *args):
+/home/saranshvashistha/anaconda3/envs/stable_diff_2/lib/python3.10/site-packages/guided_diffusion/nn.py:154: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, *output_grads):
+Logging to /tmp/openai-2025-02-12-01-44-49-005048
+creating model and diffusion...

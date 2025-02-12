@@ -104,6 +104,7 @@ def main():
     def forward_backward_log(data_loader, prefix="train"):
         batch, extra = next(data_loader)
         labels = extra["y"].to(dist_util.dev())
+        # print(f"Labels Min: {labels.min()}, Max: {labels.max()}")
 
         batch = batch.to(dist_util.dev())
         # Noisy images
@@ -183,6 +184,8 @@ def save_model(mp_trainer, opt, step):
 
 
 def compute_top_k(logits, labels, k, reduction="mean"):
+    # print(logits.shape, labels.shape)
+    # print(f"k={k}")
     _, top_ks = th.topk(logits, k, dim=-1)
     if reduction == "mean":
         return (top_ks == labels[:, None]).float().sum(dim=-1).mean().item()
