@@ -30,6 +30,45 @@
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "justMyCode": false
+        },
+        {
+            "name": "Debug MPI Diffusion Training",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/image_train.py",
+            "args": [
+            "--image_size", "256",
+            "--num_channels", "256",
+            "--num_res_blocks", "2",
+            "--learn_sigma", "True",
+            "--class_cond", "True",
+            "--diffusion_steps", "1000",
+            "--noise_schedule", "cosine",
+            "--rescale_learned_sigmas", "False",
+            "--rescale_timesteps", "False",
+            "--lr", "1e-4",
+            "--batch_size", "1",
+            "--resume_checkpoint", "/home/saranshvashistha/workspace/class_conditioned/guided-diffusion/models/0000.pt",
+            "--num_head_channels", "64",
+            "--attention_resolutions", "32,16,8",
+            "--resblock_updown","True",
+            "--use_scale_shift_norm","True",
+            "--num_heads","4"
+            
+
+      ],
+    
+            "env": {
+                "OMPI_ALLOW_RUN_AS_ROOT": "1",
+                "OMPI_ALLOW_RUN_AS_ROOT_CONFIRM": "1",
+                "CUDA_LAUNCH_BLOCKING": "1",
+                 "OPENAI_LOGDIR": "/home/saranshvashistha/workspace/class_conditioned/guided-diffusion/logs"
+            },
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": false
         }
     ]
+    
+
 }
