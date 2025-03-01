@@ -8,3 +8,5 @@ classify_image_graph_def.pb
 /models
 /models/
 models/0000.pt
+/datasets/plantvillage*
+/datasets/plantvillage_dataset_test.zip

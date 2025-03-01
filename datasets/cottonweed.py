@@ -50,6 +50,7 @@ def main(source, dest_train, dest_test, training_ratio, image_size):
         ext = (".JPEG", "jpeg", "JPG", ".jpg", ".png", "PNG")
         for (dirpath, dirnames, filenames) in walk(os.path.join(source, item)):
             for filename in filenames:
+                print(filename)
                 if filename.endswith(ext):
                     # if less than ratio of training set, then put it to the training set
                     if np.random.random(1)[0] <= training_ratio:
@@ -63,26 +64,26 @@ def main(source, dest_train, dest_test, training_ratio, image_size):
                                  os.path.join(dest_test, image_name))
                         index_test += 1
 
-    # generate npz files for evaluating FID and IS
-    images = []
-    labels = []
-    for (dirpath, dirnames, filenames) in walk(dest_train):
-        for filename in filenames:
-            image = Image.open(os.path.join(dest_train, filename))
-            image = center_crop_arr(image, image_size)
-            images.append(asarray(image))
-            labels.append(class_index.index(filename.split('_')[0]))
+    # # generate npz files for evaluating FID and IS
+    # images = []
+    # labels = []
+    # for (dirpath, dirnames, filenames) in walk(dest_train):
+    #     for filename in filenames:
+    #         image = Image.open(os.path.join(dest_train, filename))
+    #         image = center_crop_arr(image, image_size)
+    #         images.append(asarray(image))
+    #         labels.append(class_index.index(filename.split('_')[0]))
 
-    np.savez('cottonweed.npz', np.array(images), np.array(labels))
+    # np.savez('cottonweed.npz', np.array(images), np.array(labels))
 
 
 if __name__ == "__main__":
-    source = '/home/saranshvashistha/workspace/weedDataset/CottonWeedID15'
-    dest_train = '/home/saranshvashistha/workspace/author_code/guided-diffusion/datasets/CottonWeedDiff_train'
-    dest_test = '/home/saranshvashistha/workspace/author_code/guided-diffusion/datasets/CottonWeedDiff_test'
+    source = '/home/saranshvashistha/workspace/ControlNetCannyEdges/plantvillage_dataset/color'
+    dest_train = '/home/saranshvashistha/workspace/class_conditioned/guided-diffusion/datasets/plantvillage_dataset_test'
+    dest_test = '/home/saranshvashistha/workspace/class_conditioned/guided-diffusion/datasets/plantvillage_dataset_train'
 
     # ratio of training and testing
-    training_ratio = 0.9
+    training_ratio = 1.0
     image_size = 256
 
     main(source, dest_train, dest_test, training_ratio, image_size)
