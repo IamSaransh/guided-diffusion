@@ -119,6 +119,10 @@ class TrainLoop:
                         resume_checkpoint, map_location=dist_util.dev()
                     )
                 )
+        import torch.nn as nn
+        self.model.label_emb = nn.Embedding(10, 1024)
+        self.model = self.model.to(dist_util.dev())
+
 
         dist_util.sync_params(self.model.parameters())
 

@@ -48,13 +48,13 @@
             "--rescale_timesteps", "False",
             "--lr", "1e-4",
             "--batch_size", "1",
-            "--resume_checkpoint", "/home/saranshvashistha/workspace/class_conditioned/guided-diffusion/models/0000.pt",
+            "--resume_checkpoint", "/home/saranshvashistha/workspace/class_conditioned/0000.pt",
             "--num_head_channels", "64",
             "--attention_resolutions", "32,16,8",
             "--resblock_updown","True",
             "--use_scale_shift_norm","True",
-            "--num_heads","4"
-            
+            "--num_heads","4",
+            "--data_dir","/home/saranshvashistha/workspace/class_conditioned/guided-diffusion/datasets/plantvillage_dataset_train"
 
       ],
     

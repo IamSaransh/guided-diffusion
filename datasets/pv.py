@@ -17,6 +17,17 @@ class_index = ['Carpetweeds', 'Eclipta', 'Goosegrass', 'Morningglory',
                'Nutsedge', 'PalmerAmaranth', 'Purslane', 'Sicklepod', 'SpottedSpurge', 'Waterhemp']
 
 
+# mapping = { "Tomato___Tomato_mosaic_virus": "",
+# "Tomato___Spider_mites Two-spotted_spider_mite":"",
+# "Tomato___Late_blight"
+# "Tomato___Early_blight"
+# "Tomato___Target_Spot"
+# "Tomato___Leaf_Mold"
+# "Tomato___Bacterial_spot"
+# "Tomato___Septoria_leaf_spot"
+# "Tomato___healthy"
+# "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+
 
 def center_crop_arr(pil_image, image_size):
     # We are not on a new enough PIL to support the `reducing_gap`
@@ -51,21 +62,20 @@ def main(source, dest_train, dest_test, training_ratio, image_size):
         ext = (".JPEG", "jpeg", "JPG", ".jpg", ".png", "PNG")
         for (dirpath, dirnames, filenames) in walk(os.path.join(source, item)):
             for filename in filenames:
-                print(item)
-                break
+                class_name = item.replace('_', '').replace('___', '').replace('__', '')
                 if filename.endswith(ext):
                     # if less than ratio of training set, then put it to the training set
                     if np.random.random(1)[0] <= training_ratio:
-                        image_name = item + '_' + str(index_train) + '.jpg'
+                        image_name = class_name + '_' + str(index_train) + '.jpg'
                         copyfile(os.path.join(source, item, filename),
                                  os.path.join(dest_train, image_name))
                         index_train += 1
                     else:
-                        image_name = item + '_' + str(index_test) + '.jpg'
+                        image_name = class_name + '_' + str(index_test) + '.jpg'
                         copyfile(os.path.join(source, item, filename),
                                  os.path.join(dest_test, image_name))
                         index_test += 1
-
+    print("done")
     # # generate npz files for evaluating FID and IS
     # images = []
     # labels = []
@@ -85,7 +95,7 @@ if __name__ == "__main__":
     dest_test = '/home/saranshvashistha/workspace/class_conditioned/guided-diffusion/datasets/plantvillage_dataset_test'
 
     # ratio of training and testing
-    training_ratio = 1.0
+    training_ratio = 0.9
     image_size = 256
 
     main(source, dest_train, dest_test, training_ratio, image_size)
